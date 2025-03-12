@@ -54,6 +54,13 @@ export default defineConfig({
     }
   },
   test: {
+    coverage: {
+      provider: 'v8',
+      exclude: [
+        '**/index.ts',
+        'vite.config.ts',
+      ],
+    },
     server: {
       deps: {
         // inline: ['vuetify']
