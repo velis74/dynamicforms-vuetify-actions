@@ -1,91 +1,114 @@
-# @dynamicforms/vue-forms
+# @dynamicforms/vuetify-actions
 
-A lightweight, reactive data entry forms library for Vue.js that handles form state management without dictating your
-UI components.
+A responsive and flexible library for rendering actions (buttons, links) in Vue.js applications with Vuetify, 
+integrated with @dynamicforms/vue-forms.
 
 ## Introduction
 
-`@dynamicforms/vue-forms` provides a powerful yet simple way to manage form data, validation, and state in Vue 
-applications. The library focuses on the logic layer of forms, giving you complete freedom to use any UI components 
-you prefer.
+`@dynamicforms/vuetify-actions` provides a powerful yet simple way to manage responsive actions in forms built 
+with Vue.js, Vuetify, and @dynamicforms/vue-forms. The library focuses on separating action logic from UI
+representation, giving you control over how actions render across different screen sizes.
 
-Unlike other form libraries that couple data management with specific UI components, `@dynamicforms/vue-forms` 
-separates these concerns, allowing you to build forms that match your design system perfectly.
+Unlike other action management approaches, `@dynamicforms/vuetify-actions` provides a responsive solution that adapts
+to different breakpoints, allowing actions to change their appearance based on screen size.
 
 ## Features
 
-- **UI-agnostic**: Works with any Vue UI components or your custom ones
-- **Reactive**: Built on Vue's reactivity system for seamless integration
-- **Nested structures**: Support for complex data with nested fields and groups
-- **Event system**: Rich event handling for field changes, validation, and more
-- **TypeScript support**: Full type definitions for excellent developer experience
-- **Lightweight**: No dependencies besides Vue and lodash
-- **Field types**: Core field types (Field, Action, Group, List) to represent any data structure
-- **Validation**: Simple validation system with extensible error handling
+- **Responsive Design**: Automatically adapt action display based on screen size breakpoints (xs, sm, md, lg, xl)
+- **Display Flexibility**: Toggle between button and text display styles
+- **Icon Support**: Seamless integration with vue-ionicon for action icons
+- **Customizable Display**: Control visibility of labels and icons at different breakpoints
+- **Vuetify Integration**: Works with Vuetify UI components for consistent styling
+- **TypeScript Support**: Full type definitions for excellent developer experience
+- **@dynamicforms/vue-forms Integration**: Connects to the form library's action system
 
 ## Installation
 
 ```bash
-npm install @dynamicforms/vue-forms
+npm install @dynamicforms/vuetify-actions
 ```
 
 ## Basic Usage Example
 
-Here's a simple example of how to create and use a form with fields and groups:
+Here's a simple example of how to create and use actions with responsive rendering:
 
 ```typescript
-import { reactive } from 'vue';
-import { Field, Group, ValueChangedAction } from '@dynamicforms/vue-forms';
+import { Action } from '@dynamicforms/vuetify-actions';
+import { Action as FormAction } from '@dynamicforms/vue-forms';
 
-// Create a form with fields
-const personForm = new Group({
-  firstName: new Field({ value: 'John' }),
-  lastName: new Field({ value: 'Doe' }),
-  age: new Field({ value: 30 }),
-  active: new Field({ value: true })
-});
+// Create a form action
+const saveFormAction = new FormAction();
 
-// Access values
-console.log(personForm.value);  // { firstName: 'John', lastName: 'Doe', age: 30, active: true }
-
-// Update a field
-personForm.fields.firstName.value = 'Jane';
-
-// Disable a field
-personForm.fields.age.enabled = false;
-
-// Form serializes only enabled fields
-console.log(personForm.value);  // { firstName: 'Jane', lastName: 'Doe', active: true }
+// Create a responsive action for the form action
+const saveAction = new Action(
+  {
+    name: 'save',
+    label: 'Save',
+    icon: 'save-outline',
+    displayStyle: {
+      renderAs: 'BUTTON',
+      showIcon: true,
+      showLabel: true,
+      // Responsive options for different breakpoints
+      sm: { showLabel: false }, // On small screens, only show icon
+      md: { showIcon: true, showLabel: true }, // On medium screens, show both
+    }
+  },
+  saveFormAction
+);
 ```
 
-## Events Example
+## Responsive Display Example
 
-The library provides a powerful event system for field changes and other actions:
+The library provides flexible control over how actions appear at different screen sizes:
 
 ```typescript
-import { Field, Group, ValueChangedAction, ValidationErrorText } from '@dynamicforms/vue-forms';
+import { Action, DisplayStyle } from '@dynamicforms/vuetify-actions';
+import { Action as FormAction } from '@dynamicforms/vue-forms';
 
-const emailField = new Field({ value: '' })
-  .registerAction(new ValueChangedAction(async (field, supr, newValue, oldValue) => {
-    // Custom validation on value change
-    if (!newValue.includes('@')) {
-      field.errors = [new ValidationErrorText('Invalid email format')];
-    } else {
-      field.errors = [];
+const deleteAction = new Action(
+  {
+    name: 'delete',
+    label: 'Delete',
+    icon: 'trash-outline',
+    displayStyle: {
+      // Default style (used for xs and larger if not overridden)
+      renderAs: DisplayStyle.BUTTON,
+      showIcon: true,
+      showLabel: true,
+      // Specific breakpoint overrides
+      xs: { showLabel: false }, // On extra small screens, only show icon
+      sm: { showLabel: false }, // On small screens, only show icon
+      md: { showLabel: true },  // On medium screens, show label
+      lg: { renderAs: DisplayStyle.TEXT }, // On large screens, show as text
+      xl: { renderAs: DisplayStyle.TEXT }, // On extra large screens, show as text
     }
-    
-    // Always call supr to continue the action chain
-    return supr(field, newValue, oldValue);
-  }));
+  },
+  new FormAction()
+);
+```
 
-// Or register events on a form
-const form = new Group({
-  email: emailField,
-  username: new Field()
-}).registerAction(new ValueChangedAction(async (field, supr, newValue, oldValue) => {
-  console.log('Form data changed:', newValue);
-  return supr(field, newValue, oldValue);
-}));
+## Vue Component Usage
+
+Using the actions in a Vue component with Vuetify:
+
+```vue
+<template>
+  <DfActions :actions="actions" button-size="small" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Action } from '@dynamicforms/vuetify-actions';
+import { DfActions } from '@dynamicforms/vuetify-actions';
+import { Action as FormAction } from '@dynamicforms/vue-forms';
+
+const actions = ref([
+  Action.closeAction({}, new FormAction().registerAction(/* your execute handler */)),
+  Action.yesAction({}, new FormAction().registerAction(/* your execute handler */)),
+  Action.noAction({}, new FormAction().registerAction(/* your execute handler */))
+]);
+</script>
 ```
 
 ## TypeScript Support
@@ -93,40 +116,31 @@ const form = new Group({
 The library is written in TypeScript and provides full type definitions:
 
 ```typescript
-import { Field, Group, IField } from '@dynamicforms/vue-forms';
+import { Action, ActionJSON, DisplayStyle } from '@dynamicforms/vuetify-actions';
+import { Action as FormAction } from '@dynamicforms/vue-forms';
 
-// Define your form structure with types
-interface UserFormData {
-  username: Field;
-  email: Field;
-  preferences: Group<{
-    darkMode: Field;
-    notifications: Field;
-  }>;
-}
+// Define your action with TypeScript
+const actionData: ActionJSON = {
+  name: 'submit',
+  label: 'Submit Form',
+  icon: 'checkmark-outline',
+  displayStyle: {
+    renderAs: DisplayStyle.BUTTON,
+    sm: { showLabel: false }
+  }
+};
 
-// Create the form with type checking
-const userForm = new Group<UserFormData>({
-  username: new Field({ value: '' }),
-  email: new Field({ value: '' }),
-  preferences: new Group({
-    darkMode: new Field({ value: true }),
-    notifications: new Field({ value: true })
-  })
-});
-
-// TypeScript knows the structure
-const darkMode: boolean = userForm.fields.preferences.fields.darkMode.value;
+const submitAction = new Action(actionData, new FormAction());
 ```
 
 ## Conclusion
 
-`@dynamicforms/vue-forms` provides a clean, flexible approach to form management in Vue applications. By focusing on 
-data structures and state management rather than UI components, it offers unparalleled flexibility while maintaining 
-a simple, intuitive API.
+`@dynamicforms/vuetify-actions` provides a clean, flexible approach to managing responsive actions in Vue.js 
+applications with Vuetify. By focusing on responsive design and separation of concerns, it offers the flexibility 
+needed for modern web applications while maintaining a simple, intuitive API.
 
-For more detailed documentation and examples, check out the [source code](https://github.com/velis74/dynamicforms-vue-forms) or reach out to the author 
-for assistance.
+For more detailed documentation and examples, check out the 
+[source code](https://github.com/velis74/dynamicforms-vuetify-actions) or reach out to the author for assistance.
 
 ## License
 
