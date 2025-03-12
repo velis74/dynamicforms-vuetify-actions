@@ -1,5 +1,5 @@
 {
-  "name": "@dynamicforms/vue-responsive-actions",
+  "name": "@dynamicforms/vuetify-actions",
   "private": false,
   "version": "0.1.0",
   "type": "module",
@@ -8,12 +8,12 @@
   "files": [
     "dist/*"
   ],
-  "main": "dist/dynamicforms-vue-responsive-actions.umd.cjs",
+  "main": "dist/dynamicforms-vuetify-actions.umd.cjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/dynamicforms-vue-responsive-actions.umd.cjs",
-      "import": "./dist/dynamicforms-vue-responsive-actions.js"
+      "require": "./dist/dynamicforms-vuetify-actions.umd.cjs",
+      "import": "./dist/dynamicforms-vuetify-actions.js"
     }
   },
   "workspaces": [
@@ -36,16 +36,18 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:velis74/dynamicforms-vue-responsive-actions.git"
+    "url": "git@github.com:velis74/dynamicforms-vuetify-actions.git"
   },
-  "issues": "https://github.com/velis74/dynamicforms-vue-responsive-actions/issues",
+  "issues": "https://github.com/velis74/dynamicforms-vuetify-actions/issues",
   "peerDependencies": {
-    "lodash": "^4.17.16",
+    "lodash-es": "^4.17.16",
     "vue": "^3.4",
-    "@dynamicforms/vue-forms": "^0.1.0"
+    "vue-ionicon": "^2.1.0",
+    "vuetify": "^3.6",
+    "@dynamicforms/vue-forms": "^0.1.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.16",
+    "@types/lodash-es": "^4.17.12",
     "@vitejs/plugin-vue": "^5",
     "@vitest/coverage-v8": "^3",
     "@vue/test-utils": "^2.2.4",

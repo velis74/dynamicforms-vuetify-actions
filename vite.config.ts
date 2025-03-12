@@ -39,12 +39,12 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       formats: ['umd', 'es'],
-      fileName: 'dynamicforms-vue-responsive-actions',
-      name: 'dynamicforms-vue-responsive-actions.[name]',
+      fileName: 'dynamicforms-vuetify-actions',
+      name: 'dynamicforms-vuetify-actions.[name]',
     },
     rollupOptions: {
       external: [
-        'lodash',
+        'lodash-es',
         'vue',
         '@dynamicforms/vue-forms'
       ],
