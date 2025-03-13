@@ -1,5 +1,5 @@
 immediate todo list
 
 - full documentation
-- demo app with more examples
-- more coverage in unit tests
+- unit tests severely lacking
+- is Action.name really necessary?

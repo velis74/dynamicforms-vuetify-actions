@@ -1,6 +1,6 @@
 # @dynamicforms/vuetify-actions
 
-A responsive and flexible library for rendering actions (buttons, links) in Vue.js applications with Vuetify, 
+A responsive library for rendering actions (buttons, links) in Vue.js applications with Vuetify, 
 integrated with @dynamicforms/vue-forms.
 
 ## Introduction
