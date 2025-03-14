@@ -3,7 +3,7 @@
     <p><strong>Current breakpoint:</strong> {{ currentBreakpoint }}</p>
 
     <div class="actions-container mt-4">
-      <DfActions :actions="actions" button-size="default" />
+      <DfActions :actions="actions"/>
     </div>
   </div>
 </template>
@@ -33,8 +33,9 @@ const saveAction = new Action(
     displayStyle: {
       renderAs: DisplayStyle.BUTTON,
       showIcon: true,
-      showLabel: true,
-      sm: { showLabel: false } // On small screens, only show icon
+      showLabel: false,
+      md: { showLabel: true, showIcon: false }, // Medium screen and bigger, show label, but not icon
+      lg: { showIcon: true } // Large screen and bigger, show label (carried over from md), and icon
     }
   },
   new MockFormAction() as any
@@ -48,9 +49,9 @@ const deleteAction = new Action(
     displayStyle: {
       renderAs: DisplayStyle.BUTTON,
       showIcon: true,
-      showLabel: true,
-      sm: { showLabel: false }, // On small screens, only show icon
-      lg: { renderAs: DisplayStyle.TEXT } // On large screens, show as text
+      showLabel: false,
+      md: { showLabel: true, showIcon: false }, // Medium screen and bigger, show label, but not icon
+      lg: { showIcon: true, renderAs: DisplayStyle.TEXT } // On large screens, show as text
     }
   },
   new MockFormAction() as any
@@ -64,8 +65,9 @@ const cancelAction = new Action(
     displayStyle: {
       renderAs: DisplayStyle.BUTTON,
       showIcon: true,
-      showLabel: true,
-      sm: { showLabel: false } // On small screens, only show icon
+      showLabel: false,
+      md: { showLabel: true, showIcon: false }, // On small screens, only show icon
+      lg: { showIcon: true } // Large screen and bigger, show label (carried over from md), and icon
     }
   },
   new MockFormAction() as any

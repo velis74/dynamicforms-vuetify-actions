@@ -56,9 +56,11 @@ export default defineConfig({
   test: {
     coverage: {
       provider: 'v8',
+      include: [
+        'src/**/*'
+      ],
       exclude: [
         '**/index.ts',
-        'vite.config.ts',
       ],
     },
     server: {
