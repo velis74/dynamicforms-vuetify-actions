@@ -1,17 +1,62 @@
 <template>
   <div class="actions-demo pa-4">
-    <p><strong>Current breakpoint:</strong> {{ currentBreakpoint }}</p>
+    <div class="d-flex align-center justify-space-between mb-4">
+      <div class="mb-0"><strong>Current breakpoint:</strong> {{ currentBreakpoint }}</div>
+      <div class="d-flex align-center">
+        <span class="me-2">Button size:</span>
+        <v-select
+          v-model="selectedSize"
+          :items="sizeOptions"
+          density="compact"
+          variant="outlined"
+          hide-details
+          class="size-select"
+          style="width: 16em"
+        ></v-select>
+      </div>
+    </div>
 
-    <div class="actions-container mt-4">
-      <DfActions :actions="actions"/>
+    <div
+      class="actions-container mt-4"
+      :class="{ 'd-inline-block': showAsGroup !== 'no' }"
+    >
+      <df-actions
+        :actions="actions"
+        :button-size="buttonSize"
+        :show-as-group="showAsGroup"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, Ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import { Action, DisplayStyle, DfActions } from '../../src';
+
+// Size options
+const sizeOptions = [
+  'group x-small',
+  'group small',
+  'bordered group x-small',
+  'bordered group small',
+  'x-small',
+  'small',
+  'default',
+  'large',
+  'x-large'
+];
+const selectedSize = ref('default');
+const buttonSize = computed(() => {
+  const words = selectedSize.value.trim().split(/\s+/);
+  return words[words.length - 1];
+});
+// Check if current selection is a group size
+const showAsGroup = computed(() => {
+  if (selectedSize.value.startsWith('group')) return 'grouped-no-borders';
+  else if (selectedSize.value.startsWith('bordered')) return 'grouped';
+  return 'no';
+});
 
 // Mock FormAction class for documentation
 class MockFormAction {
@@ -73,7 +118,7 @@ const cancelAction = new Action(
   new MockFormAction() as any
 );
 
-const actions = ref([saveAction, deleteAction, cancelAction]);
+const actions: Ref<Action[]> = ref([saveAction, deleteAction, cancelAction]);
 
 // Get current breakpoint
 const display = useDisplay();
@@ -88,7 +133,6 @@ const currentBreakpoint = computed(() => {
 
 <style scoped>
 .actions-demo {
-  /* background-color: #f5f5f5; */
   border: .2em solid #ccc;
   border-radius: 1em;
 }
@@ -97,6 +141,10 @@ const currentBreakpoint = computed(() => {
   border: .1em dashed #ccc;
   padding: 1em;
   border-radius: .5em;
-  /* background-color: white; */
+}
+
+.size-select :deep(.v-field__input) {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 </style>

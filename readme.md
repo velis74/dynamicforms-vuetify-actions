@@ -94,7 +94,7 @@ Using the actions in a Vue component with Vuetify:
 
 ```vue
 <template>
-  <DfActions :actions="actions" button-size="small" />
+  <df-actions :actions="actions" button-size="small" showAsGroup="no" />
 </template>
 
 <script setup lang="ts">

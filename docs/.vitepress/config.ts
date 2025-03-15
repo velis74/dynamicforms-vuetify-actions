@@ -8,19 +8,10 @@ export default defineConfig({
     logo: '/logo.png',
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Guide', link: '/guide/getting-started' },
       { text: 'API', link: '/api/' },
       { text: 'Examples', link: '/examples/component-example' }
     ],
     sidebar: {
-      '/guide/': [
-        {
-          text: 'Introduction',
-          items: [
-            { text: 'Getting Started', link: '/guide/getting-started' },
-          ]
-        }
-      ],
       '/examples/': [
         {
           text: 'Examples',

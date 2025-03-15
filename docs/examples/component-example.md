@@ -14,7 +14,7 @@ The component accepts an array of `Action` objects and renders them as buttons. 
 
 ```vue
 <template>
-  <DfActions :actions="actions" button-size="default" />
+  <df-actions :actions="actions" button-size="default" />
 </template>
 
 <script setup>
@@ -56,10 +56,11 @@ const actions = ref([
 
 The component accepts the following props:
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `actions` | `Action[]` | `[]` | Array of Action objects to render |
-| `buttonSize` | `string` or `number` | `'default'` | Size of buttons (see Vuetify's v-btn size prop) |
+| Prop | Type                                             | Default     | Description |
+|------|--------------------------------------------------|-------------|-------------|
+| `actions` | `Action[]`                                  | `[]`        | Array of Action objects to render |
+| `buttonSize` | `string` or `number`                     | `'default'` | Size of buttons (see Vuetify's v-btn size prop) |
+| `groupMode` | 'no' \| 'grouped' \| 'grouped-no-borders' | `'no'`      | Controls how buttons are grouped |
 
 ## Responsive Behavior
 

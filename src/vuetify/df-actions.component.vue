@@ -1,5 +1,12 @@
 <template>
-  <div v-if="actionsRef.length > 0" class="text-end" :class="showAsGroup ? 'button-group' : ''">
+  <div
+    v-if="actionsRef.length > 0"
+    class="text-end"
+    :class="{
+      'button-group': showAsGroup === 'grouped' || showAsGroup === 'grouped-no-borders',
+      'with-border': showAsGroup === 'grouped',
+    }"
+  >
     <v-btn
       v-for="(action, idx) in actionsRef"
       :key="idx"
@@ -23,15 +30,17 @@ import { useDisplay } from 'vuetify';
 
 import { Action, BreakpointJSON, BreakpointNames, DisplayStyle } from '../core';
 
+type ShowAsGroup = 'no' | 'grouped' | 'grouped-no-borders';
+
 interface ActionComponentProps {
   actions: Action[] | Ref<Action[]>;
   buttonSize?: string | number; // see https://vuetifyjs.com/en/api/v-btn/#props-size
-  showAsGroup?: boolean
+  showAsGroup?: ShowAsGroup
 }
 
 const props = withDefaults(defineProps<ActionComponentProps>(), {
   buttonSize: 'default',
-  showAsGroup: false,
+  showAsGroup: 'no',
 });
 
 const actionsRef = <Ref<Action[]>>(isRef(props.actions) ? props.actions : ref(props.actions));
@@ -89,7 +98,6 @@ function labelText(action: Action): string {
   height: 1.5em;
 }
 .button-group {
-  border: .1em solid gray;
   border-radius: .5em;
   /* the following two make the container fit the small buttons. without them there would be a top margin */
   line-height: 0;
@@ -109,7 +117,10 @@ function labelText(action: Action): string {
   border-start-end-radius: .5em;
   border-end-end-radius: .5em;
 }
-.button-group .v-btn:not(:first-child) {
-  border-inline-start: .1em solid gray;
+.button-group.with-border {
+  border: .1em solid currentColor;
+}
+.button-group.with-border .v-btn:not(:first-child) {
+  border-inline-start: .1em solid currentColor;
 }
 </style>

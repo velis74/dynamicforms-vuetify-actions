@@ -81,7 +81,7 @@ Then in your template:
 
 ```vue
 <template>
-  <DfActions :actions="actions" button-size="default" />
+  <df-actions :actions="actions" button-size="default" show-as-group="no" />
 </template>
 ```
 
