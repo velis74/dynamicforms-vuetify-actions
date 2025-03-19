@@ -63,9 +63,9 @@ describe('ResponsiveRenderOptions', () => {
       label: undefined,
     });
 
-    // should carry-over from lg
+    // should carry-over from lg, bt also have xl-specific renderAs
     expect(options.getOptionsForBreakpoint('xl')).toEqual({
-      renderAs: DisplayStyle.BUTTON,
+      renderAs: DisplayStyle.TEXT,
       showIcon: false,
       showLabel: true,
       label: undefined,

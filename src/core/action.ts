@@ -1,4 +1,4 @@
-import * as Form from '@dynamicforms/vue-forms';
+import { Action as FormAction, ExecuteAction } from '@dynamicforms/vue-forms';
 import { isString } from 'lodash-es';
 
 import { DisplayStyle } from './display-style';
@@ -22,9 +22,9 @@ class Action {
 
   public displayStyle: ResponsiveRenderOptions;
 
-  public formAction: Form.Action;
+  public formAction: FormAction;
 
-  constructor(data: ActionJSON, formAction: Form.Action) {
+  constructor(data: ActionJSON, formAction: FormAction) {
     if (data.name == null) throw new Error(`Action name must not be empty ${data}`);
     // any non-string or empty string must resolve as null for label
     const label = !isString(data.label) || data.label.length === 0 ? undefined : data.label;
@@ -59,13 +59,13 @@ class Action {
     return `$action${actionName.charAt(0).toUpperCase()}${actionName.slice(1)}`;
   }
 
-  private static makeFormAction(actionOrExecuteHandler?: Form.Action | Form.ExecuteAction): Form.Action {
-    let fa: Form.Action;
-    if (actionOrExecuteHandler instanceof Form.ExecuteAction) {
-      fa = new Form.Action().registerAction(actionOrExecuteHandler);
+  private static makeFormAction(actionOrExecuteHandler?: FormAction | ExecuteAction): FormAction {
+    let fa: FormAction;
+    if (actionOrExecuteHandler instanceof ExecuteAction) {
+      fa = FormAction.create().registerAction(actionOrExecuteHandler);
     } else if (actionOrExecuteHandler === undefined) {
-      fa = new Form.Action();
-    } else if (actionOrExecuteHandler instanceof Form.Action) {
+      fa = FormAction.create();
+    } else if (actionOrExecuteHandler instanceof FormAction) {
       fa = actionOrExecuteHandler;
     } else {
       throw new Error('actionOrExecuteHandler is not of any of supported types');
@@ -73,7 +73,7 @@ class Action {
     return fa;
   }
 
-  static closeAction(data: ActionJSON, actionOrExecuteHandler?: Form.Action | Form.ExecuteAction) {
+  static closeAction(data: ActionJSON, actionOrExecuteHandler?: FormAction | ExecuteAction) {
     return new Action(
       {
         name: 'close',
@@ -86,7 +86,7 @@ class Action {
     );
   }
 
-  static yesAction(data: ActionJSON, actionOrExecuteHandler?: Form.Action | Form.ExecuteAction) {
+  static yesAction(data: ActionJSON, actionOrExecuteHandler?: FormAction | ExecuteAction) {
     return new Action(
       {
         name: 'yes',
@@ -99,7 +99,7 @@ class Action {
     );
   }
 
-  static noAction(data: ActionJSON, actionOrExecuteHandler?: Form.Action | Form.ExecuteAction) {
+  static noAction(data: ActionJSON, actionOrExecuteHandler?: FormAction | ExecuteAction) {
     return new Action(
       {
         name: 'no',

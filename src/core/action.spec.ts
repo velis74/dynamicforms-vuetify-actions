@@ -1,4 +1,4 @@
-import * as Form from '@dynamicforms/vue-forms';
+import { Action as FormAction } from '@dynamicforms/vue-forms';
 import { vi } from 'vitest';
 
 import Action, { ActionJSON } from './action';
@@ -17,7 +17,7 @@ describe('Action', () => {
           sm: { showLabel: false, showIcon: false, renderAs: 'BUTTON' as unknown as DisplayStyle },
         },
       };
-      const action = new Action(actionData, new Form.Action());
+      const action = new Action(actionData, FormAction.create());
 
       expect(action).toHaveProperty('name', 'test-action');
       expect(action).toHaveProperty('label', 'Test action');
@@ -35,7 +35,7 @@ describe('Action', () => {
     it('does not throw an error if the name matches the pattern', () => {
       const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
       const actionData = { name: 'valid-name' };
-      new Action(actionData, new Form.Action()); // eslint-disable-line no-new
+      new Action(actionData, FormAction.create()); // eslint-disable-line no-new
       expect(consoleWarnSpy).not.toHaveBeenCalled();
 
       consoleWarnSpy.mockRestore();
@@ -44,7 +44,7 @@ describe('Action', () => {
 
   describe('Action template functions', () => {
     it('actionClose() should return an Action object with correct values', () => {
-      const action = Action.closeAction({}, new Form.Action());
+      const action = Action.closeAction({}, FormAction.create());
       expect(action).toBeInstanceOf(Action);
       expect(action).toHaveProperty('name', 'close');
       expect(action).toHaveProperty('label', 'Close');
@@ -54,7 +54,7 @@ describe('Action', () => {
     });
 
     it('actionYes() should return an Action object with correct values', () => {
-      const action = Action.yesAction({}, new Form.Action());
+      const action = Action.yesAction({}, FormAction.create());
       expect(action).toBeInstanceOf(Action);
       expect(action).toHaveProperty('name', 'yes');
       expect(action).toHaveProperty('label', 'Yes');
@@ -64,7 +64,7 @@ describe('Action', () => {
     });
 
     it('actionNo() should return an Action object with correct values', () => {
-      const action = Action.noAction({}, new Form.Action());
+      const action = Action.noAction({}, FormAction.create());
       expect(action).toBeInstanceOf(Action);
       expect(action).toHaveProperty('name', 'no');
       expect(action).toHaveProperty('label', 'No');
